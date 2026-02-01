@@ -34,3 +34,4 @@ coverage
 # Prisma
 /generated/prisma
 prisma/dev.db
+.idea/
