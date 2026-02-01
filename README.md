@@ -193,7 +193,8 @@ All successful responses are wrapped in a standardized envelope:
 *   `npm run start:debug` - Start with debug mode
 *   `npm run build` - Build for production
 *   `npm run start:prod` - Run production build
-*   `npm run lint` - Run ESLint
+*   `npm run lint` - Run ESLint with auto-fix
+*   `npm run lint:check` - Check linting without auto-fix (CI mode)
 *   `npm run format` - Format code with Prettier
 *   `npm run test` - Run unit tests
 *   `npm run test:e2e` - Run end-to-end tests

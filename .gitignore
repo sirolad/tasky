@@ -27,6 +27,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# ESLint cache
+.eslintcache
+
 # Testing
 coverage
 /test-results

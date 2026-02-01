@@ -42,14 +42,12 @@ describe('AllExceptionsFilter', () => {
   } as ArgumentsHost;
 
   it('should handle Prisma P2002 error as 409 Conflict', () => {
-    const exception = new Prisma.PrismaClientKnownRequestError(
-      'Unique constraint failed',
-      {
+    const exception: Prisma.PrismaClientKnownRequestError =
+      new Prisma.PrismaClientKnownRequestError('Unique constraint failed', {
         code: 'P2002',
         clientVersion: '1.0',
         meta: { target: ['title'] },
-      },
-    );
+      });
 
     filter.catch(exception, mockArgumentsHost);
 
