@@ -2,7 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { configValidationSchema } from './infrastructure/config/config.validation';
 import { PrismaService } from './infrastructure/prisma/prisma.service';
-import { PrismaTaskRepository, PrismaUserRepository } from './infrastructure/repositories';
+import {
+  PrismaTaskRepository,
+  PrismaUserRepository,
+} from './infrastructure/repositories';
 import { ITaskRepository, IUserRepository } from './domain/repositories';
 import {
   CreateTaskUseCase,

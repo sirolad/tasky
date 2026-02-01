@@ -9,7 +9,11 @@ export class TaskResponseDto {
   @ApiProperty({ example: 'Implement Clean Architecture' })
   title: string;
 
-  @ApiProperty({ example: 'Structure the project correctly', required: false, nullable: true })
+  @ApiProperty({
+    example: 'Structure the project correctly',
+    required: false,
+    nullable: true,
+  })
   description: string | null;
 
   @ApiProperty({ enum: TaskStatus, example: TaskStatus.OPEN })

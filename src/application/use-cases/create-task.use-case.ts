@@ -10,15 +10,13 @@ export class CreateTaskUseCase {
     private readonly taskRepository: ITaskRepository,
   ) {}
 
-  async execute(title: string, description?: string): Promise<Task> {
+  async execute(title: string, description?: string, assignedToId?: string): Promise<Task> {
     const task = new Task(
       randomUUID(),
       title,
-      description || null,
+      description ?? null,
       TaskStatus.OPEN,
-      null,
-      new Date(),
-      new Date(),
+      assignedToId,
     );
     return this.taskRepository.save(task);
   }

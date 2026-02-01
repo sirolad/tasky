@@ -16,7 +16,11 @@ export class PrismaTaskRepository implements ITaskRepository {
     return this.mapToDomain(row);
   }
 
-  async findAll(filters?: { status?: string; userId?: string; title?: string }): Promise<Task[]> {
+  async findAll(filters?: {
+    status?: string;
+    userId?: string;
+    title?: string;
+  }): Promise<Task[]> {
     const where: any = {};
     if (filters?.status) where.status = filters.status;
     if (filters?.userId) where.assignedToId = filters.userId;
@@ -69,7 +73,11 @@ export class PrismaTaskRepository implements ITaskRepository {
     );
 
     if (row.assignedTo) {
-      task.assignedUser = new User(row.assignedTo.id, row.assignedTo.name, row.assignedTo.email);
+      task.assignedUser = new User(
+        row.assignedTo.id,
+        row.assignedTo.name,
+        row.assignedTo.email,
+      );
     }
 
     return task;

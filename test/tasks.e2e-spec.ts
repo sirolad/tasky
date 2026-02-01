@@ -1,5 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common';
+import {
+  INestApplication,
+  ValidationPipe,
+  VersioningType,
+} from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { TransformInterceptor } from '../src/infrastructure/interceptors/transform.interceptor';
@@ -21,7 +25,9 @@ describe('TaskController (e2e)', () => {
     });
     app.useGlobalInterceptors(new TransformInterceptor());
     app.useGlobalFilters(new AllExceptionsFilter(app.get(HttpAdapterHost)));
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ whitelist: true, transform: true }),
+    );
     await app.init();
   });
 
@@ -47,6 +53,34 @@ describe('TaskController (e2e)', () => {
       .expect(200)
       .expect((res) => {
         expect(Array.isArray(res.body.data)).toBe(true);
+      });
+  });
+
+  it('/v1/tasks/:id/assign/:userId (POST)', async () => {
+    // 1. Create a user
+    const userRes = await request(app.getHttpServer())
+      .post('/v1/users')
+      .send({ name: 'Assignee', email: `assignee-${Date.now()}@example.com` })
+      .expect(201);
+    const userId = userRes.body.data.id;
+
+    // 2. Create a task
+    const title = `Task to Assign ${Date.now()}`;
+    const taskRes = await request(app.getHttpServer())
+      .post('/v1/tasks')
+      .send({ title })
+      .expect(201);
+    const taskId = taskRes.body.data.id;
+
+    // 3. Assign task to user
+    return request(app.getHttpServer())
+      .post(`/v1/tasks/${taskId}/assign/${userId}`)
+      .expect(201) // Checking if it's 201 or 200 based on controller (Post usually defaults to 201 in Nest)
+      .expect((res) => {
+        expect(res.body.data.id).toBe(taskId);
+        expect(res.body.data.assignedToId).toBe(userId);
+        expect(res.body.data.assignedUser).toBeDefined();
+        expect(res.body.data.assignedUser.id).toBe(userId);
       });
   });
 });

@@ -7,8 +7,16 @@ export class CreateTaskDto {
   @IsNotEmpty()
   title: string;
 
-  @ApiProperty({ example: 'Structure the project with entities, use cases, and repositories', required: false })
+  @ApiProperty({
+    example: 'Structure the project with entities, use cases, and repositories',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   description?: string;
+
+  @ApiProperty({ example: 'user-uuid-123', required: false })
+  @IsString()
+  @IsOptional()
+  assignedToId?: string;
 }

@@ -1,5 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiCreatedResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
 import {
   CreateTaskUseCase,
   ListTasksUseCase,
@@ -7,7 +21,12 @@ import {
   DeleteTaskUseCase,
   AssignUserToTaskUseCase,
 } from '../../application/use-cases';
-import { CreateTaskDto, UpdateTaskDto, TaskResponseDto, TaskFilterDto } from '../dtos';
+import {
+  CreateTaskDto,
+  UpdateTaskDto,
+  TaskResponseDto,
+  TaskFilterDto,
+} from '../dtos';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -24,7 +43,11 @@ export class TaskController {
   @ApiOperation({ summary: 'Create a new task' })
   @ApiCreatedResponse({ type: TaskResponseDto })
   create(@Body() createTaskDto: CreateTaskDto) {
-    return this.createTaskUseCase.execute(createTaskDto.title, createTaskDto.description);
+    return this.createTaskUseCase.execute(
+      createTaskDto.title,
+      createTaskDto.description,
+      createTaskDto.assignedToId,
+    );
   }
 
   @Get()

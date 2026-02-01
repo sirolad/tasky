@@ -2,7 +2,11 @@ import { Task } from '../entities/task.entity';
 
 export interface ITaskRepository {
   findById(id: string): Promise<Task | null>;
-  findAll(filters?: { status?: string; userId?: string; title?: string }): Promise<Task[]>;
+  findAll(filters?: {
+    status?: string;
+    userId?: string;
+    title?: string;
+  }): Promise<Task[]>;
   save(task: Task): Promise<Task>;
   delete(id: string): Promise<void>;
 }

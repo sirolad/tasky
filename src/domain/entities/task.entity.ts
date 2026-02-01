@@ -12,9 +12,9 @@ export class Task {
     public title: string,
     public description: string | null,
     public status: TaskStatus,
-    public assignedToId: string | null,
-    public readonly createdAt: Date,
-    public updatedAt: Date,
-    public assignedUser?: User,
+    public assignedToId: string | null = null,
+    public readonly createdAt: Date = new Date(),
+    public updatedAt: Date = new Date(),
+    public assignedUser: User | null = null,
   ) {}
 }

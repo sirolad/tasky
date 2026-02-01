@@ -9,14 +9,18 @@ export class UpdateTaskUseCase {
     private readonly taskRepository: ITaskRepository,
   ) {}
 
-  async execute(id: string, data: Partial<{ title: string; description: string; status: TaskStatus }>): Promise<Task> {
+  async execute(
+    id: string,
+    data: Partial<{ title: string; description: string; status: TaskStatus }>,
+  ): Promise<Task> {
     const task = await this.taskRepository.findById(id);
     if (!task) {
       throw new NotFoundException(`Task with ID ${id} not found`);
     }
 
     if (data.title !== undefined) task.title = data.title;
-    if (data.description !== undefined) task.description = data.description || null;
+    if (data.description !== undefined)
+      task.description = data.description || null;
     if (data.status !== undefined) task.status = data.status;
     task.updatedAt = new Date();
 

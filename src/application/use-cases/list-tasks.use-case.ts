@@ -9,7 +9,11 @@ export class ListTasksUseCase {
     private readonly taskRepository: ITaskRepository,
   ) {}
 
-  async execute(filters?: { status?: string; userId?: string; title?: string }): Promise<Task[]> {
+  async execute(filters?: {
+    status?: string;
+    userId?: string;
+    title?: string;
+  }): Promise<Task[]> {
     return this.taskRepository.findAll(filters);
   }
 }

@@ -4,7 +4,10 @@ import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+export class PrismaService
+  extends PrismaClient
+  implements OnModuleInit, OnModuleDestroy
+{
   constructor(private readonly configService: ConfigService) {
     const url = configService.get<string>('DATABASE_URL')!;
     const adapter = new PrismaBetterSqlite3({ url: url.replace('file:', '') });

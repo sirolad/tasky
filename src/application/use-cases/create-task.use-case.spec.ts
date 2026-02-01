@@ -19,7 +19,7 @@ describe('CreateTaskUseCase', () => {
   it('should create a task', async () => {
     const title = 'Test Task';
     const description = 'Test Description';
-    const savedTask = new Task('1', title, description, TaskStatus.OPEN, null, new Date(), new Date());
+    const savedTask = new Task('1', title, description, TaskStatus.OPEN);
     taskRepository.save.mockResolvedValue(savedTask);
 
     const result = await createTaskUseCase.execute(title, description);

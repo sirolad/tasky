@@ -26,7 +26,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       httpStatus = exception.getStatus();
       const response = exception.getResponse();
-      message = typeof response === 'string' ? response : (response as any).message || response;
+      message =
+        typeof response === 'string'
+          ? response
+          : (response as any).message || response;
     } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
       // https://www.prisma.io/docs/reference/api-reference/error-reference#prisma-client-query-engine
       switch (exception.code) {
@@ -48,7 +51,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
       }
     } else if (exception instanceof Error) {
       message = exception.message;
-      this.logger.error(`Unhandled exception: ${exception.message}`, exception.stack);
+      this.logger.error(
+        `Unhandled exception: ${exception.message}`,
+        exception.stack,
+      );
     } else {
       this.logger.error(`Unknown exception: ${exception}`);
     }

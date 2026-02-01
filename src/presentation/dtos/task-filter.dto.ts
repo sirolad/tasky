@@ -3,7 +3,10 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { TaskStatus } from '../../domain/entities';
 
 export class TaskFilterDto {
-  @ApiPropertyOptional({ enum: TaskStatus, description: 'Filter by task status' })
+  @ApiPropertyOptional({
+    enum: TaskStatus,
+    description: 'Filter by task status',
+  })
   @IsOptional()
   @IsEnum(TaskStatus)
   status?: TaskStatus;

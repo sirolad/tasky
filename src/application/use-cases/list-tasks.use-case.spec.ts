@@ -15,7 +15,7 @@ describe('ListTasksUseCase', () => {
 
   it('should list all tasks when no filters are provided', async () => {
     const tasks = [
-      new Task('1', 'Task 1', null, TaskStatus.OPEN, null, new Date(), new Date()),
+      new Task('1', 'Task 1', null, TaskStatus.OPEN),
     ];
     taskRepository.findAll.mockResolvedValue(tasks);
 
@@ -35,7 +35,11 @@ describe('ListTasksUseCase', () => {
   });
 
   it('should filter tasks by status, userId and title search', async () => {
-    const filters = { status: TaskStatus.OPEN, userId: 'user-1', title: 'Search' };
+    const filters = {
+      status: TaskStatus.OPEN,
+      userId: 'user-1',
+      title: 'Search',
+    };
     taskRepository.findAll.mockResolvedValue([]);
 
     await listTasksUseCase.execute(filters);
@@ -46,7 +50,7 @@ describe('ListTasksUseCase', () => {
   it('should include assignedUser in the result when present', async () => {
     const user = new User('user-1', 'John Doe', 'john@example.com');
     const task = new Task('1', 'Task 1', null, TaskStatus.OPEN, 'user-1', new Date(), new Date(), user);
-    
+
     taskRepository.findAll.mockResolvedValue([task]);
 
     const result = await listTasksUseCase.execute();
