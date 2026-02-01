@@ -25,7 +25,7 @@ export class PrismaTaskRepository implements ITaskRepository {
     title?: string;
   }): Promise<{ task: Task; user: User | null }[]> {
     const where: Prisma.TaskWhereInput = {};
-    if (filters?.status) where.status = filters.status;
+    if (filters?.status) where.status = filters.status as TaskStatus;
     if (filters?.userId) where.assignedToId = filters.userId;
     if (filters?.title) where.title = { contains: filters.title };
 
