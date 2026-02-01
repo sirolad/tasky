@@ -1,6 +1,6 @@
 import { ListTasksUseCase } from './list-tasks.use-case';
 import { ITaskRepository } from '../../domain/repositories';
-import { Task, TaskStatus } from '../../domain/entities';
+import { Task, TaskStatus, User } from '../../domain/entities';
 
 describe('ListTasksUseCase', () => {
   let listTasksUseCase: ListTasksUseCase;
@@ -41,5 +41,17 @@ describe('ListTasksUseCase', () => {
     await listTasksUseCase.execute(filters);
 
     expect(taskRepository.findAll).toHaveBeenCalledWith(filters);
+  });
+
+  it('should include assignedUser in the result when present', async () => {
+    const user = new User('user-1', 'John Doe', 'john@example.com');
+    const task = new Task('1', 'Task 1', null, TaskStatus.OPEN, 'user-1', new Date(), new Date(), user);
+    
+    taskRepository.findAll.mockResolvedValue([task]);
+
+    const result = await listTasksUseCase.execute();
+
+    expect(result[0].assignedUser).toEqual(user);
+    expect(result[0].assignedToId).toBe('user-1');
   });
 });
