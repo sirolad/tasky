@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import { TaskStatus } from '../src/domain/entities';
 
 const adapter = new PrismaBetterSqlite3({ url: 'prisma/dev.db' });
 const prisma = new PrismaClient({ adapter });
@@ -77,12 +78,12 @@ async function main() {
     'Review pull request',
   ];
 
-  const statuses = ['OPEN', 'IN_PROGRESS', 'DONE'];
+  const statuses: TaskStatus[] = [TaskStatus.OPEN, TaskStatus.IN_PROGRESS, TaskStatus.DONE];
 
   for (let i = 0; i < 15; i++) {
     const randomUser = users[Math.floor(Math.random() * users.length)];
     const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-    
+
     await prisma.task.create({
       data: {
         title: taskTitles[i],
