@@ -1,0 +1,46 @@
+import { Injectable } from '@nestjs/common';
+import { IUserRepository } from '../../domain/repositories/user.repository.interface';
+import { User } from '../../domain/entities/user.entity';
+import { PrismaService } from '../prisma/prisma.service';
+
+@Injectable()
+export class PrismaUserRepository implements IUserRepository {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async findById(id: string): Promise<User | null> {
+    const row = await this.prisma.user.findUnique({ where: { id } });
+    if (!row) return null;
+    return this.mapToDomain(row);
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    const row = await this.prisma.user.findUnique({ where: { email } });
+    if (!row) return null;
+    return this.mapToDomain(row);
+  }
+
+  async findAll(): Promise<User[]> {
+    const rows = await this.prisma.user.findMany();
+    return rows.map(this.mapToDomain);
+  }
+
+  async save(user: User): Promise<User> {
+    const row = await this.prisma.user.upsert({
+      where: { id: user.id },
+      update: {
+        name: user.name,
+        email: user.email,
+      },
+      create: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+    return this.mapToDomain(row);
+  }
+
+  private mapToDomain(row: any): User {
+    return new User(row.id, row.name, row.email);
+  }
+}
