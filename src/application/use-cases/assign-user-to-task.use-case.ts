@@ -1,5 +1,5 @@
 import { ITaskRepository, IUserRepository } from '../../domain/repositories';
-import { Task } from '../../domain/entities';
+import { Task, User } from '../../domain/entities';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
@@ -11,11 +11,16 @@ export class AssignUserToTaskUseCase {
     private readonly userRepository: IUserRepository,
   ) {}
 
-  async execute(taskId: string, userId: string): Promise<Task> {
-    const task = await this.taskRepository.findById(taskId);
-    if (!task) {
+  async execute(
+    taskId: string,
+    userId: string,
+  ): Promise<{ task: Task; user: User | null }> {
+    const result = await this.taskRepository.findById(taskId);
+    if (!result) {
       throw new NotFoundException(`Task with ID ${taskId} not found`);
     }
+
+    const { task } = result;
 
     const user = await this.userRepository.findById(userId);
     if (!user) {
@@ -25,6 +30,7 @@ export class AssignUserToTaskUseCase {
     task.assignedToId = userId;
     task.updatedAt = new Date();
 
-    return this.taskRepository.save(task);
+    await this.taskRepository.save(task);
+    return { task, user };
   }
 }

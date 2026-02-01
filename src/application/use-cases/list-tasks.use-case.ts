@@ -1,5 +1,5 @@
 import { ITaskRepository } from '../../domain/repositories';
-import { Task } from '../../domain/entities';
+import { Task, User } from '../../domain/entities';
 import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class ListTasksUseCase {
     status?: string;
     userId?: string;
     title?: string;
-  }): Promise<Task[]> {
+  }): Promise<{ task: Task; user: User | null }[]> {
     return this.taskRepository.findAll(filters);
   }
 }

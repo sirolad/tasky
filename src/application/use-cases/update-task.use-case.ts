@@ -1,5 +1,5 @@
 import { ITaskRepository } from '../../domain/repositories';
-import { Task, TaskStatus } from '../../domain/entities';
+import { Task, TaskStatus, User } from '../../domain/entities';
 import {
   Inject,
   Injectable,
@@ -17,11 +17,13 @@ export class UpdateTaskUseCase {
   async execute(
     id: string,
     data: Partial<{ title: string; description: string; status: TaskStatus }>,
-  ): Promise<Task> {
-    const task = await this.taskRepository.findById(id);
-    if (!task) {
+  ): Promise<{ task: Task; user: User | null }> {
+    const result = await this.taskRepository.findById(id);
+    if (!result) {
       throw new NotFoundException(`Task with ID ${id} not found`);
     }
+
+    const { task } = result;
 
     if (data.title !== undefined) task.title = data.title;
     if (data.description !== undefined)
@@ -36,6 +38,7 @@ export class UpdateTaskUseCase {
       task.updatedAt = new Date();
     }
 
-    return this.taskRepository.save(task);
+    await this.taskRepository.save(task);
+    return result;
   }
 }

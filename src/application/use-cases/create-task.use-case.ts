@@ -1,6 +1,6 @@
-import { ITaskRepository } from '../../domain/repositories';
-import { Task, TaskStatus } from '../../domain/entities';
-import { Inject, Injectable } from '@nestjs/common';
+import { ITaskRepository, IUserRepository } from '../../domain/repositories';
+import { Task, TaskStatus, User } from '../../domain/entities';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 
 @Injectable()
@@ -8,9 +8,23 @@ export class CreateTaskUseCase {
   constructor(
     @Inject(ITaskRepository)
     private readonly taskRepository: ITaskRepository,
+    @Inject(IUserRepository)
+    private readonly userRepository: IUserRepository,
   ) {}
 
-  async execute(title: string, description?: string, assignedToId?: string): Promise<Task> {
+  async execute(
+    title: string,
+    description?: string,
+    assignedToId?: string,
+  ): Promise<{ task: Task; user: User | null }> {
+    let user: User | null = null;
+    if (assignedToId) {
+      user = await this.userRepository.findById(assignedToId);
+      if (!user) {
+        throw new NotFoundException(`User with ID "${assignedToId}" not found`);
+      }
+    }
+
     const task = new Task(
       randomUUID(),
       title,
@@ -18,6 +32,7 @@ export class CreateTaskUseCase {
       TaskStatus.OPEN,
       assignedToId,
     );
-    return this.taskRepository.save(task);
+    const savedTask = await this.taskRepository.save(task);
+    return { task: savedTask, user };
   }
 }

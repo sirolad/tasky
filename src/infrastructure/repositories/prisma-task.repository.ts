@@ -7,20 +7,22 @@ import { PrismaService } from '../prisma/prisma.service';
 export class PrismaTaskRepository implements ITaskRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findById(id: string): Promise<Task | null> {
+  async findById(
+    id: string,
+  ): Promise<{ task: Task; user: User | null } | null> {
     const row = await this.prisma.task.findUnique({
       where: { id },
       include: { assignedTo: true },
     });
     if (!row) return null;
-    return this.mapToDomain(row);
+    return this.mapToEnriched(row);
   }
 
   async findAll(filters?: {
     status?: string;
     userId?: string;
     title?: string;
-  }): Promise<Task[]> {
+  }): Promise<{ task: Task; user: User | null }[]> {
     const where: any = {};
     if (filters?.status) where.status = filters.status;
     if (filters?.userId) where.assignedToId = filters.userId;
@@ -30,7 +32,7 @@ export class PrismaTaskRepository implements ITaskRepository {
       where,
       include: { assignedTo: true },
     });
-    return rows.map((row) => this.mapToDomain(row));
+    return rows.map((row) => this.mapToEnriched(row));
   }
 
   async save(task: Task): Promise<Task> {
@@ -61,7 +63,7 @@ export class PrismaTaskRepository implements ITaskRepository {
     await this.prisma.task.delete({ where: { id } });
   }
 
-  private mapToDomain(row: any): Task {
+  private mapToEnriched(row: any): { task: Task; user: User | null } {
     const task = new Task(
       row.id,
       row.title,
@@ -72,14 +74,22 @@ export class PrismaTaskRepository implements ITaskRepository {
       row.updatedAt,
     );
 
-    if (row.assignedTo) {
-      task.assignedUser = new User(
-        row.assignedTo.id,
-        row.assignedTo.name,
-        row.assignedTo.email,
-      );
-    }
+    const user = row.assignedTo
+      ? new User(row.assignedTo.id, row.assignedTo.name, row.assignedTo.email)
+      : null;
 
-    return task;
+    return { task, user };
+  }
+
+  private mapToDomain(row: any): Task {
+    return new Task(
+      row.id,
+      row.title,
+      row.description,
+      row.status as TaskStatus,
+      row.assignedToId,
+      row.createdAt,
+      row.updatedAt,
+    );
   }
 }

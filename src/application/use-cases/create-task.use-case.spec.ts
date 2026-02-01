@@ -1,10 +1,11 @@
 import { CreateTaskUseCase } from './create-task.use-case';
-import { ITaskRepository } from '../../domain/repositories';
-import { Task, TaskStatus } from '../../domain/entities';
+import { ITaskRepository, IUserRepository } from '../../domain/repositories';
+import { Task, TaskStatus, User } from '../../domain/entities';
 
 describe('CreateTaskUseCase', () => {
   let createTaskUseCase: CreateTaskUseCase;
   let taskRepository: jest.Mocked<ITaskRepository>;
+  let userRepository: jest.Mocked<IUserRepository>;
 
   beforeEach(() => {
     taskRepository = {
@@ -13,7 +14,10 @@ describe('CreateTaskUseCase', () => {
       findAll: jest.fn(),
       delete: jest.fn(),
     } as any;
-    createTaskUseCase = new CreateTaskUseCase(taskRepository);
+    userRepository = {
+      findById: jest.fn(),
+    } as any;
+    createTaskUseCase = new CreateTaskUseCase(taskRepository, userRepository);
   });
 
   it('should create a task', async () => {
@@ -24,7 +28,23 @@ describe('CreateTaskUseCase', () => {
 
     const result = await createTaskUseCase.execute(title, description);
 
-    expect(result).toEqual(savedTask);
+    expect(result).toEqual({ task: savedTask, user: null });
+    expect(taskRepository.save).toHaveBeenCalled();
+  });
+
+  it('should create a task with an assigned user', async () => {
+    const title = 'Test Task';
+    const userId = 'user-1';
+    const user = new User(userId, 'John Doe', 'john@example.com');
+    const savedTask = new Task('1', title, null, TaskStatus.OPEN, userId);
+
+    userRepository.findById.mockResolvedValue(user);
+    taskRepository.save.mockResolvedValue(savedTask);
+
+    const result = await createTaskUseCase.execute(title, undefined, userId);
+
+    expect(result).toEqual({ task: savedTask, user });
+    expect(userRepository.findById).toHaveBeenCalledWith(userId);
     expect(taskRepository.save).toHaveBeenCalled();
   });
 });

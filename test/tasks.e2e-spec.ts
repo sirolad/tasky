@@ -123,9 +123,7 @@ describe('TaskController (e2e)', () => {
       .expect(204);
 
     // 3. Verify it's gone
-    return request(app.getHttpServer())
-      .get(`/v1/tasks/${taskId}`)
-      .expect(404);
+    return request(app.getHttpServer()).get(`/v1/tasks/${taskId}`).expect(404);
   });
 
   it('/v1/tasks/:id (PATCH) - Invalid Status Transition', async () => {

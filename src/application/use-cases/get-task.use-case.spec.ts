@@ -16,18 +16,21 @@ describe('GetTaskUseCase', () => {
 
   it('should return a task if it exists', async () => {
     const task = new Task('1', 'Test Task', 'Description', TaskStatus.OPEN);
-    taskRepository.findById.mockResolvedValue(task);
+    const enrichedResult = { task, user: null };
+    taskRepository.findById.mockResolvedValue(enrichedResult);
 
     const result = await getTaskUseCase.execute('1');
 
-    expect(result).toEqual(task);
+    expect(result).toEqual(enrichedResult);
     expect(taskRepository.findById).toHaveBeenCalledWith('1');
   });
 
   it('should throw NotFoundException if task does not exist', async () => {
     taskRepository.findById.mockResolvedValue(null);
 
-    await expect(getTaskUseCase.execute('999')).rejects.toThrow(NotFoundException);
+    await expect(getTaskUseCase.execute('999')).rejects.toThrow(
+      NotFoundException,
+    );
     expect(taskRepository.findById).toHaveBeenCalledWith('999');
   });
 });
