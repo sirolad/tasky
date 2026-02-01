@@ -15,6 +15,7 @@ import {
   DeleteTaskUseCase,
   GetTaskUseCase,
   AssignUserToTaskUseCase,
+  ListUsersUseCase,
   ICreateTaskUseCase,
   IListTasksUseCase,
   IUpdateTaskUseCase,
@@ -22,6 +23,7 @@ import {
   IGetTaskUseCase,
   IAssignUserToTaskUseCase,
   ICreateUserUseCase,
+  IListUsersUseCase,
 } from './application/use-cases';
 import { TaskController, UserController } from './presentation/controllers';
 
@@ -70,6 +72,10 @@ import { TaskController, UserController } from './presentation/controllers';
     {
       provide: ICreateUserUseCase,
       useClass: CreateUserUseCase,
+    },
+    {
+      provide: IListUsersUseCase,
+      useClass: ListUsersUseCase,
     },
   ],
 })

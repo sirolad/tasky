@@ -5,9 +5,11 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { ICreateUserUseCase } from '../../application/use-cases';
+import {
+  ICreateUserUseCase,
+  IListUsersUseCase,
+} from '../../application/use-cases';
 import { CreateUserDto, UserResponseDto } from '../dtos';
-import { IUserRepository } from '../../domain/repositories';
 
 @ApiTags('users')
 @Controller('users')
@@ -15,8 +17,8 @@ export class UserController {
   constructor(
     @Inject(ICreateUserUseCase)
     private readonly createUserUseCase: ICreateUserUseCase,
-    @Inject(IUserRepository)
-    private readonly userRepository: IUserRepository,
+    @Inject(IListUsersUseCase)
+    private readonly listUsersUseCase: IListUsersUseCase,
   ) {}
 
   @Post()
@@ -33,6 +35,6 @@ export class UserController {
   @ApiOperation({ summary: 'List all users' })
   @ApiOkResponse({ type: [UserResponseDto] })
   findAll() {
-    return this.userRepository.findAll();
+    return this.listUsersUseCase.execute();
   }
 }

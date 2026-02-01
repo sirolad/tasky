@@ -48,3 +48,8 @@ export interface ICreateUserUseCase {
   execute(name: string, email: string): Promise<User>;
 }
 export const ICreateUserUseCase = 'ICreateUserUseCase';
+
+export interface IListUsersUseCase {
+  execute(): Promise<User[]>;
+}
+export const IListUsersUseCase = 'IListUsersUseCase';
