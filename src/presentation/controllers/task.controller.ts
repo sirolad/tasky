@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import {
   CreateTaskUseCase,
   ListTasksUseCase,
@@ -7,7 +7,7 @@ import {
   DeleteTaskUseCase,
   AssignUserToTaskUseCase,
 } from '../../application/use-cases';
-import { CreateTaskDto, UpdateTaskDto } from '../dtos';
+import { CreateTaskDto, UpdateTaskDto, TaskResponseDto, TaskFilterDto } from '../dtos';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -22,18 +22,21 @@ export class TaskController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new task' })
+  @ApiCreatedResponse({ type: TaskResponseDto })
   create(@Body() createTaskDto: CreateTaskDto) {
     return this.createTaskUseCase.execute(createTaskDto.title, createTaskDto.description);
   }
 
   @Get()
   @ApiOperation({ summary: 'List all tasks' })
-  findAll(@Query('status') status?: string) {
-    return this.listTasksUseCase.execute({ status });
+  @ApiOkResponse({ type: [TaskResponseDto] })
+  findAll(@Query() filterDto: TaskFilterDto) {
+    return this.listTasksUseCase.execute(filterDto);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update a task' })
+  @ApiOkResponse({ type: TaskResponseDto })
   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     return this.updateTaskUseCase.execute(id, updateTaskDto);
   }
@@ -46,6 +49,7 @@ export class TaskController {
 
   @Post(':id/assign/:userId')
   @ApiOperation({ summary: 'Assign a user to a task' })
+  @ApiOkResponse({ type: TaskResponseDto })
   assign(@Param('id') id: string, @Param('userId') userId: string) {
     return this.assignUserToTaskUseCase.execute(id, userId);
   }

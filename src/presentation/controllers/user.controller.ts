@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Get, Inject } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { CreateUserUseCase } from '../../application/use-cases';
-import { CreateUserDto } from '../dtos';
+import { CreateUserDto, UserResponseDto } from '../dtos';
 import { IUserRepository } from '../../domain/repositories';
 
 @ApiTags('users')
@@ -15,12 +15,14 @@ export class UserController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new user' })
+  @ApiCreatedResponse({ type: UserResponseDto })
   create(@Body() createUserDto: CreateUserDto) {
     return this.createUserUseCase.execute(createUserDto.name, createUserDto.email);
   }
 
   @Get()
   @ApiOperation({ summary: 'List all users' })
+  @ApiOkResponse({ type: [UserResponseDto] })
   findAll() {
     return this.userRepository.findAll();
   }

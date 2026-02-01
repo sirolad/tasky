@@ -1,3 +1,5 @@
+import { User } from './user.entity';
+
 export enum TaskStatus {
   OPEN = 'OPEN',
   IN_PROGRESS = 'IN_PROGRESS',
@@ -13,5 +15,6 @@ export class Task {
     public assignedToId: string | null,
     public readonly createdAt: Date,
     public updatedAt: Date,
+    public assignedUser?: User,
   ) {}
 }
