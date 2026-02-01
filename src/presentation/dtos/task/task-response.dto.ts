@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { TaskStatus } from '../../domain/entities';
-import { UserResponseDto } from './user-response.dto';
+import { TaskStatus } from '../../../domain/entities';
+import { UserResponseDto } from '../user/user-response.dto';
 
 export class TaskResponseDto {
   @ApiProperty({ example: 'uuid-123' })

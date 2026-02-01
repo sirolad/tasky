@@ -1,6 +1,6 @@
 import { IsOptional, IsString, IsEnum } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { TaskStatus } from '../../domain/entities';
+import { TaskStatus } from '../../../domain/entities';
 
 export class TaskFilterDto {
   @ApiPropertyOptional({
