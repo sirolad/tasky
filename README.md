@@ -206,13 +206,9 @@ All successful responses are wrapped in a standardized envelope:
 *   `npm run test` - Run unit tests
 *   `npm run test:e2e` - Run end-to-end tests
 *   `npm run test:cov` - Generate test coverage report
-<<<<<<< HEAD
-*   `npm run depcruise` - Validate Clean Architecture boundaries
-=======
 *   `npm run test:watch` - Run tests in watch mode
 *   `npm run depcruise` - Validate Clean Architecture boundaries
 *   `npm run depcruise:graph` - Generate dependency graph (requires Graphviz)
->>>>>>> 2752e94 (update readme)
 *   `npm run depcruise:archi` - Generate architecture diagram (requires Graphviz)
 
 ## 🏛️ Architecture Validation
