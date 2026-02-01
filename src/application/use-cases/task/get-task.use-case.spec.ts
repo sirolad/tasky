@@ -1,6 +1,6 @@
 import { GetTaskUseCase } from './get-task.use-case';
-import { ITaskRepository } from '../../domain/repositories';
-import { Task, TaskStatus } from '../../domain/entities';
+import { ITaskRepository } from '../../../domain/repositories';
+import { Task, TaskStatus } from '../../../domain/entities';
 import { NotFoundException } from '@nestjs/common';
 
 describe('GetTaskUseCase', () => {

@@ -1,6 +1,6 @@
 import { ListTasksUseCase } from './list-tasks.use-case';
-import { ITaskRepository } from '../../domain/repositories';
-import { Task, TaskStatus } from '../../domain/entities';
+import { ITaskRepository } from '../../../domain/repositories';
+import { Task, TaskStatus } from '../../../domain/entities';
 
 describe('ListTasksUseCase', () => {
   let listTasksUseCase: ListTasksUseCase;

@@ -1,6 +1,6 @@
 import { CreateTaskUseCase } from './create-task.use-case';
-import { ITaskRepository, IUserRepository } from '../../domain/repositories';
-import { Task, TaskStatus, User } from '../../domain/entities';
+import { ITaskRepository, IUserRepository } from '../../../domain/repositories';
+import { Task, TaskStatus, User } from '../../../domain/entities';
 
 describe('CreateTaskUseCase', () => {
   let createTaskUseCase: CreateTaskUseCase;

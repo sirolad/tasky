@@ -1,8 +1,8 @@
-import { IUserRepository } from '../../domain/repositories';
-import { User } from '../../domain/entities';
+import { IUserRepository } from '../../../domain/repositories';
+import { User } from '../../../domain/entities';
 import { Inject, Injectable, ConflictException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import { ICreateUserUseCase } from './use-case.interfaces';
+import { ICreateUserUseCase } from '../use-case.interfaces';
 
 @Injectable()
 export class CreateUserUseCase implements ICreateUserUseCase {

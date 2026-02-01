@@ -1,12 +1,12 @@
-import { ITaskRepository } from '../../domain/repositories';
-import { Task, TaskStatus, User } from '../../domain/entities';
+import { ITaskRepository } from '../../../domain/repositories';
+import { Task, TaskStatus, User } from '../../../domain/entities';
 import {
   Inject,
   Injectable,
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { IUpdateTaskUseCase } from './use-case.interfaces';
+import { IUpdateTaskUseCase } from '../use-case.interfaces';
 
 @Injectable()
 export class UpdateTaskUseCase implements IUpdateTaskUseCase {

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IUserRepository } from '../../domain/repositories';
-import { User } from '../../domain/entities';
-import { IListUsersUseCase } from './use-case.interfaces';
+import { IUserRepository } from '../../../domain/repositories';
+import { User } from '../../../domain/entities';
+import { IListUsersUseCase } from '../use-case.interfaces';
 
 @Injectable()
 export class ListUsersUseCase implements IListUsersUseCase {
