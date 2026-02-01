@@ -5,7 +5,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { CreateUserUseCase } from '../../application/use-cases';
+import { ICreateUserUseCase } from '../../application/use-cases';
 import { CreateUserDto, UserResponseDto } from '../dtos';
 import { IUserRepository } from '../../domain/repositories';
 
@@ -13,7 +13,8 @@ import { IUserRepository } from '../../domain/repositories';
 @Controller('users')
 export class UserController {
   constructor(
-    private readonly createUserUseCase: CreateUserUseCase,
+    @Inject(ICreateUserUseCase)
+    private readonly createUserUseCase: ICreateUserUseCase,
     @Inject(IUserRepository)
     private readonly userRepository: IUserRepository,
   ) {}

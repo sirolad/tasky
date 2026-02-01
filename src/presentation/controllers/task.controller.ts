@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Inject,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -17,12 +18,12 @@ import {
 } from '@nestjs/swagger';
 import { HttpCode, HttpStatus } from '@nestjs/common';
 import {
-  CreateTaskUseCase,
-  ListTasksUseCase,
-  UpdateTaskUseCase,
-  DeleteTaskUseCase,
-  GetTaskUseCase,
-  AssignUserToTaskUseCase,
+  ICreateTaskUseCase,
+  IListTasksUseCase,
+  IUpdateTaskUseCase,
+  IDeleteTaskUseCase,
+  IGetTaskUseCase,
+  IAssignUserToTaskUseCase,
 } from '../../application/use-cases';
 import {
   CreateTaskDto,
@@ -35,12 +36,18 @@ import {
 @Controller('tasks')
 export class TaskController {
   constructor(
-    private readonly createTaskUseCase: CreateTaskUseCase,
-    private readonly listTasksUseCase: ListTasksUseCase,
-    private readonly getTaskUseCase: GetTaskUseCase,
-    private readonly updateTaskUseCase: UpdateTaskUseCase,
-    private readonly deleteTaskUseCase: DeleteTaskUseCase,
-    private readonly assignUserToTaskUseCase: AssignUserToTaskUseCase,
+    @Inject(ICreateTaskUseCase)
+    private readonly createTaskUseCase: ICreateTaskUseCase,
+    @Inject(IListTasksUseCase)
+    private readonly listTasksUseCase: IListTasksUseCase,
+    @Inject(IGetTaskUseCase)
+    private readonly getTaskUseCase: IGetTaskUseCase,
+    @Inject(IUpdateTaskUseCase)
+    private readonly updateTaskUseCase: IUpdateTaskUseCase,
+    @Inject(IDeleteTaskUseCase)
+    private readonly deleteTaskUseCase: IDeleteTaskUseCase,
+    @Inject(IAssignUserToTaskUseCase)
+    private readonly assignUserToTaskUseCase: IAssignUserToTaskUseCase,
   ) {}
 
   @Post()
@@ -96,7 +103,10 @@ export class TaskController {
     return this.mapToResponse(result);
   }
 
-  private mapToResponse(result: { task: any; user: any }): TaskResponseDto {
+  private mapToResponse(result: {
+    task: import('../../domain/entities').Task;
+    user: import('../../domain/entities').User | null;
+  }): TaskResponseDto {
     const { task, user } = result;
     return {
       id: task.id,

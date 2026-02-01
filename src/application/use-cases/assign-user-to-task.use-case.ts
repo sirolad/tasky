@@ -1,9 +1,10 @@
 import { ITaskRepository, IUserRepository } from '../../domain/repositories';
 import { Task, User } from '../../domain/entities';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { IAssignUserToTaskUseCase } from './task-use-cases.interface';
 
 @Injectable()
-export class AssignUserToTaskUseCase {
+export class AssignUserToTaskUseCase implements IAssignUserToTaskUseCase {
   constructor(
     @Inject(ITaskRepository)
     private readonly taskRepository: ITaskRepository,

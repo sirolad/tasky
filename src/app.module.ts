@@ -8,13 +8,20 @@ import {
 } from './infrastructure/repositories';
 import { ITaskRepository, IUserRepository } from './domain/repositories';
 import {
+  CreateUserUseCase,
   CreateTaskUseCase,
   ListTasksUseCase,
   UpdateTaskUseCase,
   DeleteTaskUseCase,
   GetTaskUseCase,
   AssignUserToTaskUseCase,
-  CreateUserUseCase,
+  ICreateTaskUseCase,
+  IListTasksUseCase,
+  IUpdateTaskUseCase,
+  IDeleteTaskUseCase,
+  IGetTaskUseCase,
+  IAssignUserToTaskUseCase,
+  ICreateUserUseCase,
 } from './application/use-cases';
 import { TaskController, UserController } from './presentation/controllers';
 
@@ -36,13 +43,34 @@ import { TaskController, UserController } from './presentation/controllers';
       provide: IUserRepository,
       useClass: PrismaUserRepository,
     },
-    CreateTaskUseCase,
-    ListTasksUseCase,
-    UpdateTaskUseCase,
-    DeleteTaskUseCase,
-    GetTaskUseCase,
-    AssignUserToTaskUseCase,
-    CreateUserUseCase,
+    {
+      provide: ICreateTaskUseCase,
+      useClass: CreateTaskUseCase,
+    },
+    {
+      provide: IListTasksUseCase,
+      useClass: ListTasksUseCase,
+    },
+    {
+      provide: IUpdateTaskUseCase,
+      useClass: UpdateTaskUseCase,
+    },
+    {
+      provide: IDeleteTaskUseCase,
+      useClass: DeleteTaskUseCase,
+    },
+    {
+      provide: IGetTaskUseCase,
+      useClass: GetTaskUseCase,
+    },
+    {
+      provide: IAssignUserToTaskUseCase,
+      useClass: AssignUserToTaskUseCase,
+    },
+    {
+      provide: ICreateUserUseCase,
+      useClass: CreateUserUseCase,
+    },
   ],
 })
 export class AppModule {}

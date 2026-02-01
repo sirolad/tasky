@@ -6,9 +6,10 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
+import { IUpdateTaskUseCase } from './task-use-cases.interface';
 
 @Injectable()
-export class UpdateTaskUseCase {
+export class UpdateTaskUseCase implements IUpdateTaskUseCase {
   constructor(
     @Inject(ITaskRepository)
     private readonly taskRepository: ITaskRepository,
