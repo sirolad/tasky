@@ -34,20 +34,23 @@ The project is structured into layers to ensure separation of concerns and maint
 *   **API Docs**: Swagger / OpenAPI 3.0
 *   **Containerization**: Docker & Docker Compose
 
-## �🚀 Key Features
+## 🚀 Key Features
 
 *   **Clean Architecture**: Deep separation between business rules and technical implementation.
+*   **Architecture Enforcement**: Automated validation via dependency-cruiser to prevent violations.
+*   **Type-Safe Enums**: TaskStatus enum for compile-time safety and database validation.
 *   **API Versioning**: Global URI-based versioning (defaulting to `/v1`).
 *   **Global Response Envelope**: All successful responses are wrapped in a `{ data: ... }` object via a global interceptor.
 *   **Relational Data**: Tasks automatically include assigned user details where applicable.
 *   **Dynamic Exception Filter**: Unified error handling mapping Prisma errors and HttpExceptions to clear, standardized responses.
 *   **Swagger Docs**: Comprehensive API documentation with DTO examples.
+*   **Comprehensive Testing**: Unit tests, e2e tests, and architecture validation.
 
 ## 🛠️ Getting Started
 
 ### Prerequisites
 
-*   Node.js (v18+)
+*   Node.js (v20+)
 *   npm
 
 ### Setup
@@ -62,6 +65,8 @@ The project is structured into layers to ensure separation of concerns and maint
     ```bash
     cp .env.example .env
     ```
+    Ensure `DATABASE_URL` is set (default: `file:./prisma/dev.db`)
+
 3.  **Database (SQLite)**:
     Initialize and run migrations:
     ```bash
@@ -201,7 +206,13 @@ All successful responses are wrapped in a standardized envelope:
 *   `npm run test` - Run unit tests
 *   `npm run test:e2e` - Run end-to-end tests
 *   `npm run test:cov` - Generate test coverage report
+<<<<<<< HEAD
 *   `npm run depcruise` - Validate Clean Architecture boundaries
+=======
+*   `npm run test:watch` - Run tests in watch mode
+*   `npm run depcruise` - Validate Clean Architecture boundaries
+*   `npm run depcruise:graph` - Generate dependency graph (requires Graphviz)
+>>>>>>> 2752e94 (update readme)
 *   `npm run depcruise:archi` - Generate architecture diagram (requires Graphviz)
 
 ## 🏛️ Architecture Validation
@@ -217,6 +228,24 @@ This project enforces **Clean Architecture** principles using dependency-cruiser
 Run `npm run depcruise` to validate the architecture. This check runs automatically in CI/CD.
 
 For detailed architecture guidelines, see [ARCHITECTURE.md](./ARCHITECTURE.md).
+
+## 🔄 CI/CD Pipeline
+
+This project uses GitHub Actions for continuous integration and deployment:
+
+**Automated Checks:**
+- ✅ ESLint code quality checks
+- ✅ Clean Architecture validation (dependency-cruiser)
+- ✅ Unit tests (15 tests)
+- ✅ E2E tests (7 tests)
+- ✅ Test coverage reporting
+- ✅ Production build verification
+
+**Workflow Triggers:**
+- Pull requests to `main` or `develop` branches
+- Direct pushes to `main` or `develop` branches
+
+The CI pipeline ensures code quality, architecture compliance, and test coverage before merging.
 
 ---
 
