@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { IUserRepository } from '../../domain/repositories';
 import { User } from '../../domain/entities';
@@ -26,18 +26,31 @@ export class PrismaUserRepository implements IUserRepository {
   }
 
   async save(user: User): Promise<User> {
-    const row = await this.prisma.user.upsert({
-      where: { id: user.id },
-      update: {
-        name: user.name,
-        email: user.email,
-      },
-      create: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      },
-    });
+    let row;
+    try {
+      row = await this.prisma.user.upsert({
+        where: { id: user.id },
+        update: {
+          name: user.name,
+          email: user.email,
+        },
+        create: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        },
+      });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        throw new ConflictException(
+          `User with email ${user.email} already exists`,
+        );
+      }
+      throw error;
+    }
     return this.mapToDomain(row);
   }
 

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTaskDto {
@@ -16,7 +16,7 @@ export class CreateTaskDto {
   description?: string;
 
   @ApiProperty({ example: 'user-uuid-123', required: false })
-  @IsString()
+  @IsUUID()
   @IsOptional()
   assignedToId?: string;
 }

@@ -39,7 +39,7 @@ export class UpdateTaskUseCase implements IUpdateTaskUseCase {
       task.updatedAt = new Date();
     }
 
-    await this.taskRepository.save(task);
+    result.task = await this.taskRepository.save(task);
     return result;
   }
 }

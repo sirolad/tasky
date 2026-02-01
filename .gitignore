@@ -34,4 +34,7 @@ coverage
 # Prisma
 /generated/prisma
 prisma/dev.db
-.idea/
+
+# Docker volumes
+data/*
+!data/.gitkeep

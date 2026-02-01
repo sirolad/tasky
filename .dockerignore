@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+npm-debug.log
+
+# Build output
+dist/
+build/
+coverage/
+
+# Development files
+.git/
+.gitignore
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+test/
+**/*.spec.ts
+**/*.e2e-spec.ts
+jest.config.js
+test/
+
+# Documentation
+README.md
+*.md
+docs/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Database (local dev)
+*.db
+*.db-journal
+prisma/dev.db
+
+# Logs
+logs/
+*.log
