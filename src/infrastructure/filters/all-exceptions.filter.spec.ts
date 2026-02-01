@@ -4,11 +4,14 @@ import { HttpAdapterHost } from '@nestjs/core';
 import { AllExceptionsFilter } from './all-exceptions.filter';
 import { Prisma } from '@prisma/client';
 
+interface MockHttpAdapter {
+  reply: jest.Mock;
+  getRequestUrl: jest.Mock;
+}
+
 describe('AllExceptionsFilter', () => {
   let filter: AllExceptionsFilter;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let httpAdapterHost: HttpAdapterHost;
-  const mockHttpAdapter = {
+  const mockHttpAdapter: MockHttpAdapter = {
     reply: jest.fn(),
     getRequestUrl: jest.fn().mockReturnValue('/test'),
   };
@@ -31,7 +34,6 @@ describe('AllExceptionsFilter', () => {
     }).compile();
 
     filter = module.get<AllExceptionsFilter>(AllExceptionsFilter);
-    httpAdapterHost = module.get<HttpAdapterHost>(HttpAdapterHost);
   });
 
   const mockArgumentsHost = {
