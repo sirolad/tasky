@@ -1,5 +1,5 @@
-import { ITaskRepository } from '../../domain/repositories/task.repository.interface';
-import { Task, TaskStatus } from '../../domain/entities/task.entity';
+import { ITaskRepository } from '../../domain/repositories';
+import { Task, TaskStatus } from '../../domain/entities';
 import { Inject, Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 

@@ -1,8 +1,8 @@
 import { Controller, Post, Body, Get, Inject } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
-import { CreateUserUseCase } from '../../application/use-cases/create-user.use-case';
-import { CreateUserDto } from '../dtos/create-user.dto';
-import { IUserRepository } from '../../domain/repositories/user.repository.interface';
+import { CreateUserUseCase } from '../../application/use-cases';
+import { CreateUserDto } from '../dtos';
+import { IUserRepository } from '../../domain/repositories';
 
 @ApiTags('users')
 @Controller('users')

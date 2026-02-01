@@ -1,5 +1,5 @@
-import { IUserRepository } from '../../domain/repositories/user.repository.interface';
-import { User } from '../../domain/entities/user.entity';
+import { IUserRepository } from '../../domain/repositories';
+import { User } from '../../domain/entities';
 import { Inject, Injectable, ConflictException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 

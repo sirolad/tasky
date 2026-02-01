@@ -1,4 +1,4 @@
-import { ITaskRepository } from '../../domain/repositories/task.repository.interface';
+import { ITaskRepository } from '../../domain/repositories';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()

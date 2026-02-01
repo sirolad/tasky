@@ -1,12 +1,13 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
-import { CreateTaskUseCase } from '../../application/use-cases/create-task.use-case';
-import { ListTasksUseCase } from '../../application/use-cases/list-tasks.use-case';
-import { UpdateTaskUseCase } from '../../application/use-cases/update-task.use-case';
-import { DeleteTaskUseCase } from '../../application/use-cases/delete-task.use-case';
-import { AssignUserToTaskUseCase } from '../../application/use-cases/assign-user-to-task.use-case';
-import { CreateTaskDto } from '../dtos/create-task.dto';
-import { UpdateTaskDto } from '../dtos/update-task.dto';
+import {
+  CreateTaskUseCase,
+  ListTasksUseCase,
+  UpdateTaskUseCase,
+  DeleteTaskUseCase,
+  AssignUserToTaskUseCase,
+} from '../../application/use-cases';
+import { CreateTaskDto, UpdateTaskDto } from '../dtos';
 
 @ApiTags('tasks')
 @Controller('tasks')
