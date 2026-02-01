@@ -1,0 +1,66 @@
+import {
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+  HttpException,
+  HttpStatus,
+  Logger,
+} from '@nestjs/common';
+import { HttpAdapterHost } from '@nestjs/core';
+import { Prisma } from '@prisma/client';
+
+@Catch()
+export class AllExceptionsFilter implements ExceptionFilter {
+  private readonly logger = new Logger(AllExceptionsFilter.name);
+
+  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
+
+  catch(exception: unknown, host: ArgumentsHost): void {
+    const { httpAdapter } = this.httpAdapterHost;
+    const ctx = host.switchToHttp();
+
+    let httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+    let message = 'Internal server error';
+    let errorCode: string | undefined;
+
+    if (exception instanceof HttpException) {
+      httpStatus = exception.getStatus();
+      const response = exception.getResponse();
+      message = typeof response === 'string' ? response : (response as any).message || response;
+    } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
+      // https://www.prisma.io/docs/reference/api-reference/error-reference#prisma-client-query-engine
+      switch (exception.code) {
+        case 'P2002': // Unique constraint failed
+          httpStatus = HttpStatus.CONFLICT;
+          message = `Unique constraint failed on the fields: ${(exception.meta?.target as string[])?.join(', ')}`;
+          errorCode = 'UNIQUE_CONSTRAINT_FAILED';
+          break;
+        case 'P2025': // Record to update not found
+          httpStatus = HttpStatus.NOT_FOUND;
+          message = exception.message || 'Record not found';
+          errorCode = 'RECORD_NOT_FOUND';
+          break;
+        default:
+          httpStatus = HttpStatus.BAD_REQUEST;
+          message = `Database error: ${exception.message}`;
+          errorCode = exception.code;
+          break;
+      }
+    } else if (exception instanceof Error) {
+      message = exception.message;
+      this.logger.error(`Unhandled exception: ${exception.message}`, exception.stack);
+    } else {
+      this.logger.error(`Unknown exception: ${exception}`);
+    }
+
+    const responseBody = {
+      statusCode: httpStatus,
+      timestamp: new Date().toISOString(),
+      path: httpAdapter.getRequestUrl(ctx.getRequest()),
+      message,
+      errorCode,
+    };
+
+    httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
+  }
+}

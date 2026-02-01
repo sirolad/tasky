@@ -18,7 +18,7 @@ model User {
 
 model Task {
   id          String   @id @default(uuid())
-  title       String
+  title       String   @unique
   description String?
   status      String   @default("OPEN")
   assignedTo  User?    @relation(fields: [assignedToId], references: [id])
