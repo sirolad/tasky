@@ -56,6 +56,8 @@ The project is structured into layers to ensure separation of concerns and maint
     ```bash
     npm install
     ```
+    Note: Prisma Client is automatically generated via the `postinstall` script.
+
 2.  **Environment**:
     ```bash
     cp .env.example .env
@@ -193,11 +195,28 @@ All successful responses are wrapped in a standardized envelope:
 *   `npm run start:debug` - Start with debug mode
 *   `npm run build` - Build for production
 *   `npm run start:prod` - Run production build
-*   `npm run lint` - Run ESLint
+*   `npm run lint` - Run ESLint with auto-fix
+*   `npm run lint:check` - Check linting without auto-fix (CI mode)
 *   `npm run format` - Format code with Prettier
 *   `npm run test` - Run unit tests
 *   `npm run test:e2e` - Run end-to-end tests
 *   `npm run test:cov` - Generate test coverage report
+*   `npm run depcruise` - Validate Clean Architecture boundaries
+*   `npm run depcruise:archi` - Generate architecture diagram (requires Graphviz)
+
+## 🏛️ Architecture Validation
+
+This project enforces **Clean Architecture** principles using dependency-cruiser. The architecture boundaries are automatically validated to ensure:
+
+- ✅ Domain layer remains pure (no external dependencies)
+- ✅ Application layer only depends on Domain
+- ✅ Presentation layer doesn't directly access Infrastructure
+- ✅ No circular dependencies
+- ✅ Proper separation of concerns
+
+Run `npm run depcruise` to validate the architecture. This check runs automatically in CI/CD.
+
+For detailed architecture guidelines, see [ARCHITECTURE.md](./ARCHITECTURE.md).
 
 ---
 
