@@ -153,8 +153,10 @@ import { ICreateTaskUseCase } from '../../application/use-cases';
 
 1. **Run tests**: `npm test && npm run test:e2e`
 2. **Validate architecture**: `npm run depcruise`
-3. **Check linting**: `npm run lint`
+3. **Check linting**: `npm run lint:check`
 4. **Format code**: `npm run format`
+
+**Note:** Ensure `DATABASE_URL` is set in your `.env` file. The project uses SQLite for development and testing.
 
 ### Adding New Features
 

@@ -56,6 +56,8 @@ The project is structured into layers to ensure separation of concerns and maint
     ```bash
     npm install
     ```
+    Note: Prisma Client is automatically generated via the `postinstall` script.
+
 2.  **Environment**:
     ```bash
     cp .env.example .env
