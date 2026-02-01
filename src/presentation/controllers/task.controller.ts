@@ -13,12 +13,15 @@ import {
   ApiOperation,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiNoContentResponse,
 } from '@nestjs/swagger';
+import { HttpCode, HttpStatus } from '@nestjs/common';
 import {
   CreateTaskUseCase,
   ListTasksUseCase,
   UpdateTaskUseCase,
   DeleteTaskUseCase,
+  GetTaskUseCase,
   AssignUserToTaskUseCase,
 } from '../../application/use-cases';
 import {
@@ -34,6 +37,7 @@ export class TaskController {
   constructor(
     private readonly createTaskUseCase: CreateTaskUseCase,
     private readonly listTasksUseCase: ListTasksUseCase,
+    private readonly getTaskUseCase: GetTaskUseCase,
     private readonly updateTaskUseCase: UpdateTaskUseCase,
     private readonly deleteTaskUseCase: DeleteTaskUseCase,
     private readonly assignUserToTaskUseCase: AssignUserToTaskUseCase,
@@ -57,6 +61,13 @@ export class TaskController {
     return this.listTasksUseCase.execute(filterDto);
   }
 
+  @Get(':id')
+  @ApiOperation({ summary: 'Get a task by ID' })
+  @ApiOkResponse({ type: TaskResponseDto })
+  findOne(@Param('id') id: string) {
+    return this.getTaskUseCase.execute(id);
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Update a task' })
   @ApiOkResponse({ type: TaskResponseDto })
@@ -65,12 +76,15 @@ export class TaskController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Delete a task' })
+  @ApiNoContentResponse({ description: 'Task deleted successfully' })
   remove(@Param('id') id: string) {
     return this.deleteTaskUseCase.execute(id);
   }
 
   @Post(':id/assign/:userId')
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Assign a user to a task' })
   @ApiOkResponse({ type: TaskResponseDto })
   assign(@Param('id') id: string, @Param('userId') userId: string) {

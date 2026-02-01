@@ -56,6 +56,31 @@ describe('TaskController (e2e)', () => {
       });
   });
 
+  it('/v1/tasks/:id (GET)', async () => {
+    // 1. Create a task
+    const title = `Single Task ${Date.now()}`;
+    const createRes = await request(app.getHttpServer())
+      .post('/v1/tasks')
+      .send({ title })
+      .expect(201);
+    const taskId = createRes.body.data.id;
+
+    // 2. Fetch the task
+    return request(app.getHttpServer())
+      .get(`/v1/tasks/${taskId}`)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.data.id).toBe(taskId);
+        expect(res.body.data.title).toBe(title);
+      });
+  });
+
+  it('/v1/tasks/:id (GET) - Not Found', () => {
+    return request(app.getHttpServer())
+      .get('/v1/tasks/non-existent-id')
+      .expect(404);
+  });
+
   it('/v1/tasks/:id/assign/:userId (POST)', async () => {
     // 1. Create a user
     const userRes = await request(app.getHttpServer())
@@ -75,12 +100,31 @@ describe('TaskController (e2e)', () => {
     // 3. Assign task to user
     return request(app.getHttpServer())
       .post(`/v1/tasks/${taskId}/assign/${userId}`)
-      .expect(201) // Checking if it's 201 or 200 based on controller (Post usually defaults to 201 in Nest)
+      .expect(200)
       .expect((res) => {
         expect(res.body.data.id).toBe(taskId);
         expect(res.body.data.assignedToId).toBe(userId);
         expect(res.body.data.assignedUser).toBeDefined();
         expect(res.body.data.assignedUser.id).toBe(userId);
       });
+  });
+
+  it('/v1/tasks/:id (DELETE)', async () => {
+    // 1. Create a task
+    const createRes = await request(app.getHttpServer())
+      .post('/v1/tasks')
+      .send({ title: `Delete Me ${Date.now()}` })
+      .expect(201);
+    const taskId = createRes.body.data.id;
+
+    // 2. Delete the task
+    await request(app.getHttpServer())
+      .delete(`/v1/tasks/${taskId}`)
+      .expect(204);
+
+    // 3. Verify it's gone
+    return request(app.getHttpServer())
+      .get(`/v1/tasks/${taskId}`)
+      .expect(404);
   });
 });

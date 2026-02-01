@@ -12,6 +12,7 @@ import {
   ListTasksUseCase,
   UpdateTaskUseCase,
   DeleteTaskUseCase,
+  GetTaskUseCase,
   AssignUserToTaskUseCase,
   CreateUserUseCase,
 } from './application/use-cases';
@@ -39,6 +40,7 @@ import { TaskController, UserController } from './presentation/controllers';
     ListTasksUseCase,
     UpdateTaskUseCase,
     DeleteTaskUseCase,
+    GetTaskUseCase,
     AssignUserToTaskUseCase,
     CreateUserUseCase,
   ],
