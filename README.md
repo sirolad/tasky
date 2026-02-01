@@ -11,7 +11,16 @@ The project is structured into layers to ensure separation of concerns and maint
 *   **Infrastructure**: Data persistence (Prisma with SQLite), global filters, and external service implementations.
 *   **Presentation**: REST Controllers, DTOs (with Swagger documentation), and interceptors.
 
-## 🚀 Key Features
+## �️ Tech Stack
+
+*   **Framework**: NestJS (TypeScript)
+*   **ORM**: Prisma
+*   **Database**: SQLite
+*   **Validation**: Class-validator & Class-transformer
+*   **API Docs**: Swagger / OpenAPI 3.0
+*   **Containerization**: Docker & Docker Compose
+
+## �🚀 Key Features
 
 *   **Clean Architecture**: Deep separation between business rules and technical implementation.
 *   **API Versioning**: Global URI-based versioning (defaulting to `/v1`).
@@ -50,6 +59,15 @@ The project is structured into layers to ensure separation of concerns and maint
     ```bash
     npm run start:dev
     ```
+
+### 🐳 Docker Setup
+
+Run the entire stack using Docker Compose:
+
+```bash
+docker-compose up --build
+```
+The API will be available at `http://localhost:3000/v1` and Swagger at `http://localhost:3000/api`.
 
 ## 🧪 Testing
 
