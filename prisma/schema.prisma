@@ -9,6 +9,12 @@ datasource db {
   provider = "sqlite"
 }
 
+enum TaskStatus {
+  OPEN
+  IN_PROGRESS
+  DONE
+}
+
 model User {
   id    String @id @default(uuid())
   name  String
@@ -17,12 +23,12 @@ model User {
 }
 
 model Task {
-  id          String   @id @default(uuid())
-  title       String   @unique
-  description String?
-  status      String   @default("OPEN")
-  assignedTo  User?    @relation(fields: [assignedToId], references: [id])
+  id           String     @id @default(uuid())
+  title        String     @unique
+  description  String?
+  status       TaskStatus @default(OPEN)
+  assignedTo   User?      @relation(fields: [assignedToId], references: [id])
   assignedToId String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }

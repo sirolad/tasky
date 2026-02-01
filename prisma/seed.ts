@@ -7,6 +7,11 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log('Start seeding...');
 
+  // Clear existing data
+  await prisma.task.deleteMany({});
+  await prisma.user.deleteMany({});
+  console.log('Cleared existing data.');
+
   // Create 5 Users
   const users = await Promise.all([
     prisma.user.upsert({
@@ -88,6 +93,7 @@ async function main() {
     });
   }
 
+  console.log(`Created 15 tasks`);
   console.log('Seeding finished.');
 }
 
