@@ -3,6 +3,7 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './infrastructure/filters';
+import { TransformInterceptor } from './infrastructure/interceptors/transform.interceptor';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
@@ -14,6 +15,9 @@ async function bootstrap() {
     type: VersioningType.URI,
     defaultVersion: '1',
   });
+
+  // Interceptors
+  app.useGlobalInterceptors(new TransformInterceptor());
 
   // Exception handling
   app.useGlobalFilters(new AllExceptionsFilter(app.get(HttpAdapterHost)));
