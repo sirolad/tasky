@@ -127,4 +127,22 @@ describe('TaskController (e2e)', () => {
       .get(`/v1/tasks/${taskId}`)
       .expect(404);
   });
+
+  it('/v1/tasks/:id (PATCH) - Invalid Status Transition', async () => {
+    // 1. Create a task
+    const createRes = await request(app.getHttpServer())
+      .post('/v1/tasks')
+      .send({ title: `Transition Task ${Date.now()}` })
+      .expect(201);
+    const taskId = createRes.body.data.id;
+
+    // 2. Try to move from OPEN to DONE (Invalid)
+    return request(app.getHttpServer())
+      .patch(`/v1/tasks/${taskId}`)
+      .send({ status: 'DONE' })
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.message).toContain('Invalid status transition');
+      });
+  });
 });

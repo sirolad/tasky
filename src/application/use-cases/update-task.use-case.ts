@@ -1,6 +1,11 @@
 import { ITaskRepository } from '../../domain/repositories';
 import { Task, TaskStatus } from '../../domain/entities';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 
 @Injectable()
 export class UpdateTaskUseCase {
@@ -21,8 +26,15 @@ export class UpdateTaskUseCase {
     if (data.title !== undefined) task.title = data.title;
     if (data.description !== undefined)
       task.description = data.description || null;
-    if (data.status !== undefined) task.status = data.status;
-    task.updatedAt = new Date();
+    if (data.status !== undefined) {
+      try {
+        task.setStatus(data.status);
+      } catch (error) {
+        throw new BadRequestException((error as Error).message);
+      }
+    } else {
+      task.updatedAt = new Date();
+    }
 
     return this.taskRepository.save(task);
   }
