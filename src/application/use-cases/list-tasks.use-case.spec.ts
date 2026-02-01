@@ -1,6 +1,6 @@
 import { ListTasksUseCase } from './list-tasks.use-case';
 import { ITaskRepository } from '../../domain/repositories';
-import { Task, TaskStatus, User } from '../../domain/entities';
+import { Task, TaskStatus } from '../../domain/entities';
 
 describe('ListTasksUseCase', () => {
   let listTasksUseCase: ListTasksUseCase;
@@ -9,7 +9,10 @@ describe('ListTasksUseCase', () => {
   beforeEach(() => {
     taskRepository = {
       findAll: jest.fn(),
-    } as any;
+      findById: jest.fn(),
+      save: jest.fn(),
+      delete: jest.fn(),
+    } as jest.Mocked<ITaskRepository>;
     listTasksUseCase = new ListTasksUseCase(taskRepository);
   });
 
@@ -22,7 +25,7 @@ describe('ListTasksUseCase', () => {
     const result = await listTasksUseCase.execute();
 
     expect(result).toEqual(enrichedTasks);
-    expect(taskRepository.findAll).toHaveBeenCalledWith(undefined);
+    void expect(taskRepository.findAll).toHaveBeenCalledWith(undefined);
   });
 
   it('should filter tasks by status', async () => {
@@ -31,7 +34,7 @@ describe('ListTasksUseCase', () => {
 
     await listTasksUseCase.execute(filters);
 
-    expect(taskRepository.findAll).toHaveBeenCalledWith(filters);
+    void expect(taskRepository.findAll).toHaveBeenCalledWith(filters);
   });
 
   it('should filter tasks by status, userId and title search', async () => {
@@ -44,6 +47,6 @@ describe('ListTasksUseCase', () => {
 
     await listTasksUseCase.execute(filters);
 
-    expect(taskRepository.findAll).toHaveBeenCalledWith(filters);
+    void expect(taskRepository.findAll).toHaveBeenCalledWith(filters);
   });
 });

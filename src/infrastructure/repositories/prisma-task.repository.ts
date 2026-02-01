@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { ITaskRepository } from '../../domain/repositories';
 import { Task, TaskStatus, User } from '../../domain/entities';
 import { PrismaService } from '../prisma/prisma.service';
@@ -23,7 +24,7 @@ export class PrismaTaskRepository implements ITaskRepository {
     userId?: string;
     title?: string;
   }): Promise<{ task: Task; user: User | null }[]> {
-    const where: any = {};
+    const where: Prisma.TaskWhereInput = {};
     if (filters?.status) where.status = filters.status;
     if (filters?.userId) where.assignedToId = filters.userId;
     if (filters?.title) where.title = { contains: filters.title };
@@ -63,7 +64,11 @@ export class PrismaTaskRepository implements ITaskRepository {
     await this.prisma.task.delete({ where: { id } });
   }
 
-  private mapToEnriched(row: any): { task: Task; user: User | null } {
+  private mapToEnriched(
+    row: Prisma.TaskGetPayload<{
+      include: { assignedTo: true };
+    }>,
+  ): { task: Task; user: User | null } {
     const task = new Task(
       row.id,
       row.title,
@@ -81,7 +86,7 @@ export class PrismaTaskRepository implements ITaskRepository {
     return { task, user };
   }
 
-  private mapToDomain(row: any): Task {
+  private mapToDomain(row: Prisma.TaskGetPayload<Record<string, never>>): Task {
     return new Task(
       row.id,
       row.title,

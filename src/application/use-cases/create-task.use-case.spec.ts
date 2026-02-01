@@ -13,10 +13,13 @@ describe('CreateTaskUseCase', () => {
       findById: jest.fn(),
       findAll: jest.fn(),
       delete: jest.fn(),
-    } as any;
+    } as jest.Mocked<ITaskRepository>;
     userRepository = {
       findById: jest.fn(),
-    } as any;
+      findByEmail: jest.fn(),
+      findAll: jest.fn(),
+      save: jest.fn(),
+    } as jest.Mocked<IUserRepository>;
     createTaskUseCase = new CreateTaskUseCase(taskRepository, userRepository);
   });
 
@@ -29,7 +32,7 @@ describe('CreateTaskUseCase', () => {
     const result = await createTaskUseCase.execute(title, description);
 
     expect(result).toEqual({ task: savedTask, user: null });
-    expect(taskRepository.save).toHaveBeenCalled();
+    void expect(taskRepository.save).toHaveBeenCalled();
   });
 
   it('should create a task with an assigned user', async () => {
@@ -44,7 +47,7 @@ describe('CreateTaskUseCase', () => {
     const result = await createTaskUseCase.execute(title, undefined, userId);
 
     expect(result).toEqual({ task: savedTask, user });
-    expect(userRepository.findById).toHaveBeenCalledWith(userId);
-    expect(taskRepository.save).toHaveBeenCalled();
+    void expect(userRepository.findById).toHaveBeenCalledWith(userId);
+    void expect(taskRepository.save).toHaveBeenCalled();
   });
 });

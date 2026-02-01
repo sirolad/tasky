@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { IUserRepository } from '../../domain/repositories';
 import { User } from '../../domain/entities';
 import { PrismaService } from '../prisma/prisma.service';
@@ -21,7 +22,7 @@ export class PrismaUserRepository implements IUserRepository {
 
   async findAll(): Promise<User[]> {
     const rows = await this.prisma.user.findMany();
-    return rows.map(this.mapToDomain);
+    return rows.map((row) => this.mapToDomain(row));
   }
 
   async save(user: User): Promise<User> {
@@ -40,7 +41,7 @@ export class PrismaUserRepository implements IUserRepository {
     return this.mapToDomain(row);
   }
 
-  private mapToDomain(row: any): User {
+  private mapToDomain(row: Prisma.UserGetPayload<Record<string, never>>): User {
     return new User(row.id, row.name, row.email);
   }
 }

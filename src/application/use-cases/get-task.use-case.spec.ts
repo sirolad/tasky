@@ -10,7 +10,10 @@ describe('GetTaskUseCase', () => {
   beforeEach(() => {
     taskRepository = {
       findById: jest.fn(),
-    } as any;
+      findAll: jest.fn(),
+      save: jest.fn(),
+      delete: jest.fn(),
+    } as jest.Mocked<ITaskRepository>;
     getTaskUseCase = new GetTaskUseCase(taskRepository);
   });
 
@@ -22,7 +25,7 @@ describe('GetTaskUseCase', () => {
     const result = await getTaskUseCase.execute('1');
 
     expect(result).toEqual(enrichedResult);
-    expect(taskRepository.findById).toHaveBeenCalledWith('1');
+    void expect(taskRepository.findById).toHaveBeenCalledWith('1');
   });
 
   it('should throw NotFoundException if task does not exist', async () => {
@@ -31,6 +34,6 @@ describe('GetTaskUseCase', () => {
     await expect(getTaskUseCase.execute('999')).rejects.toThrow(
       NotFoundException,
     );
-    expect(taskRepository.findById).toHaveBeenCalledWith('999');
+    void expect(taskRepository.findById).toHaveBeenCalledWith('999');
   });
 });
