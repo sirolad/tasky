@@ -1,7 +1,7 @@
 import { ITaskRepository, IUserRepository } from '../../domain/repositories';
 import { Task, User } from '../../domain/entities';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { IAssignUserToTaskUseCase } from './task-use-cases.interface';
+import { IAssignUserToTaskUseCase } from './use-case.interfaces';
 
 @Injectable()
 export class AssignUserToTaskUseCase implements IAssignUserToTaskUseCase {

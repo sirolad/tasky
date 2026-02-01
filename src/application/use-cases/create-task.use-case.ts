@@ -2,7 +2,7 @@ import { ITaskRepository, IUserRepository } from '../../domain/repositories';
 import { Task, TaskStatus, User } from '../../domain/entities';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import { ICreateTaskUseCase } from './task-use-cases.interface';
+import { ICreateTaskUseCase } from './use-case.interfaces';
 
 @Injectable()
 export class CreateTaskUseCase implements ICreateTaskUseCase {

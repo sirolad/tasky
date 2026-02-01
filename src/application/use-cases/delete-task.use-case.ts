@@ -1,6 +1,6 @@
 import { ITaskRepository } from '../../domain/repositories';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { IDeleteTaskUseCase } from './task-use-cases.interface';
+import { IDeleteTaskUseCase } from './use-case.interfaces';
 
 @Injectable()
 export class DeleteTaskUseCase implements IDeleteTaskUseCase {
