@@ -24,11 +24,19 @@ The project follows Clean Architecture principles:
    ```bash
    npm install
    ```
-2. Initialize database:
+2. Setup environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+3. Initialize database and run migrations:
    ```bash
    npx prisma migrate dev
    ```
-3. Start the server:
+4. Seed the database with initial data:
+   ```bash
+   npx prisma db seed
+   ```
+5. Start the server:
    ```bash
    npm run start:dev
    ```
