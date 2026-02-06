@@ -22,7 +22,10 @@ describe('CreateUserUseCase', () => {
     userRepository.findByEmail.mockResolvedValue(null);
     userRepository.save.mockResolvedValue(user);
 
-    const result = await createUserUseCase.execute('Test User', 'test@example.com');
+    const result = await createUserUseCase.execute(
+      'Test User',
+      'test@example.com',
+    );
 
     expect(result).toEqual(user);
     expect(userRepository.findByEmail).toHaveBeenCalledWith('test@example.com');
