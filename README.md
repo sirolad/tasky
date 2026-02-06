@@ -249,6 +249,21 @@ This project uses GitHub Actions for continuous integration and deployment:
 
 The CI pipeline ensures code quality, architecture compliance, and test coverage before merging.
 
+## Assumptions
+- I decided to use Hexagonal Architecture as against Nest.js modular architecture because it enforces a better separation of concerns and makes the code easier to test and maintain.
+- That assigning tasks to users would be 1-1 and not one to many.
+- That the flow of task status would be linear.
+- That a user might be assigned to a task at the time of task creation. 
+- That a task should be unique.
+
+## TODO
+- Add authentication and authorization.
+- A matured Database like PostgreSQL or MySQL.
+- An event to notify users about task assignments.
+- Implement pagination(which limits the number of tasks returned) and HATEOS
+- Improve test coverage
+- Automate linting and formatting
+
 ---
 
 ## Developer
