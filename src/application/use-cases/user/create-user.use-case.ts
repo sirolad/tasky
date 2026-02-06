@@ -1,20 +1,18 @@
 import { IUserRepository } from '../../../domain/repositories';
 import { User } from '../../../domain/entities';
-import { Inject, Injectable, ConflictException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { ICreateUserUseCase } from '../use-case.interfaces';
+import { ResourceAlreadyExistsException } from '../../../domain/exceptions';
 
-@Injectable()
 export class CreateUserUseCase implements ICreateUserUseCase {
   constructor(
-    @Inject(IUserRepository)
     private readonly userRepository: IUserRepository,
   ) {}
 
   async execute(name: string, email: string): Promise<User> {
     const existingUser = await this.userRepository.findByEmail(email);
     if (existingUser) {
-      throw new ConflictException(`User with email ${email} already exists`);
+      throw new ResourceAlreadyExistsException('User', email);
     }
 
     const user = new User(randomUUID(), name, email);

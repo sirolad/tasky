@@ -1,18 +1,16 @@
 import { ITaskRepository } from '../../../domain/repositories';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IDeleteTaskUseCase } from '../use-case.interfaces';
+import { ResourceNotFoundException } from '../../../domain/exceptions';
 
-@Injectable()
 export class DeleteTaskUseCase implements IDeleteTaskUseCase {
   constructor(
-    @Inject(ITaskRepository)
     private readonly taskRepository: ITaskRepository,
   ) {}
 
   async execute(id: string): Promise<void> {
     const task = await this.taskRepository.findById(id);
     if (!task) {
-      throw new NotFoundException(`Task with ID ${id} not found`);
+      throw new ResourceNotFoundException('Task', id);
     }
     await this.taskRepository.delete(id);
   }

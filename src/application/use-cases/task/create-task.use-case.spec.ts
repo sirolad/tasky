@@ -1,6 +1,7 @@
 import { CreateTaskUseCase } from './create-task.use-case';
 import { ITaskRepository, IUserRepository } from '../../../domain/repositories';
 import { Task, TaskStatus, User } from '../../../domain/entities';
+import { ResourceNotFoundException } from '../../../domain/exceptions';
 
 describe('CreateTaskUseCase', () => {
   let createTaskUseCase: CreateTaskUseCase;
@@ -49,5 +50,19 @@ describe('CreateTaskUseCase', () => {
     expect(result).toEqual({ task: savedTask, user });
     void expect(userRepository.findById).toHaveBeenCalledWith(userId);
     void expect(taskRepository.save).toHaveBeenCalled();
+  });
+
+  it('should throw ResourceNotFoundException if assigned user does not exist', async () => {
+    const title = 'Test Task';
+    const userId = 'non-existent-user';
+
+    userRepository.findById.mockResolvedValue(null);
+
+    await expect(
+      createTaskUseCase.execute(title, undefined, userId),
+    ).rejects.toThrow(ResourceNotFoundException);
+
+    void expect(userRepository.findById).toHaveBeenCalledWith(userId);
+    void expect(taskRepository.save).not.toHaveBeenCalled();
   });
 });

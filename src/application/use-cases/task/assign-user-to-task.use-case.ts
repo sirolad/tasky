@@ -1,14 +1,11 @@
 import { ITaskRepository, IUserRepository } from '../../../domain/repositories';
 import { Task, User } from '../../../domain/entities';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IAssignUserToTaskUseCase } from '../use-case.interfaces';
+import { ResourceNotFoundException } from '../../../domain/exceptions';
 
-@Injectable()
 export class AssignUserToTaskUseCase implements IAssignUserToTaskUseCase {
   constructor(
-    @Inject(ITaskRepository)
     private readonly taskRepository: ITaskRepository,
-    @Inject(IUserRepository)
     private readonly userRepository: IUserRepository,
   ) {}
 
@@ -18,18 +15,17 @@ export class AssignUserToTaskUseCase implements IAssignUserToTaskUseCase {
   ): Promise<{ task: Task; user: User | null }> {
     const result = await this.taskRepository.findById(taskId);
     if (!result) {
-      throw new NotFoundException(`Task with ID ${taskId} not found`);
+      throw new ResourceNotFoundException('Task', taskId);
     }
 
     const { task } = result;
 
     const user = await this.userRepository.findById(userId);
     if (!user) {
-      throw new NotFoundException(`User with ID ${userId} not found`);
+      throw new ResourceNotFoundException('User', userId);
     }
 
-    task.assignedToId = userId;
-    task.updatedAt = new Date();
+    task.assignUser(userId);
 
     await this.taskRepository.save(task);
     return { task, user };

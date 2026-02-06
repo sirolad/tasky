@@ -10,9 +10,8 @@ The project is structured into layers to ensure separation of concerns and maint
     *   `entities/` - Domain models with business rules
     *   `repositories/` - Repository interfaces (implementation-agnostic)
 
-*   **Application** (`src/application/`): Use cases that coordinate domain logic and infrastructure.
-    *   `use-cases/task/` - Task-related use cases (CreateTask, UpdateTask, DeleteTask, etc.)
-    *   `use-cases/user/` - User-related use cases (CreateUser, ListUsers)
+*   **Application** (`src/application/`): Framework-agnostic use cases that coordinate domain logic and infrastructure.
+    *   `use-cases/` - Pure TypeScript classes implementing business logic, decoupled from NestJS via dependency injection (DI).
 
 *   **Infrastructure** (`src/infrastructure/`): Technical implementations and external concerns.
     *   `repositories/` - Prisma-based repository implementations
@@ -37,6 +36,7 @@ The project is structured into layers to ensure separation of concerns and maint
 ## 🚀 Key Features
 
 *   **Clean Architecture**: Deep separation between business rules and technical implementation.
+*   **Framework Independent Use Cases**: Application layer logic is pure TypeScript, completely decoupled from the framework (NestJS).
 *   **Architecture Enforcement**: Automated validation via dependency-cruiser to prevent violations.
 *   **Type-Safe Enums**: TaskStatus enum for compile-time safety and database validation.
 *   **API Versioning**: Global URI-based versioning (defaulting to `/v1`).

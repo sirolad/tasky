@@ -57,6 +57,19 @@ module.exports = {
       },
     },
     {
+      name: 'application-cannot-depend-on-framework',
+      severity: 'error',
+      comment:
+        'Application layer must be framework-agnostic. ' +
+        'Use cases cannot depend on framework libraries like NestJS, Express, etc.',
+      from: {
+        path: '^src/application',
+      },
+      to: {
+        path: '(^node_modules/@nestjs|^node_modules/express|^node_modules/fastify)',
+      },
+    },
+    {
       name: 'application-cannot-depend-on-presentation',
       severity: 'error',
       comment:

@@ -47,35 +47,45 @@ import { TaskController, UserController } from './presentation/controllers';
     },
     {
       provide: ICreateTaskUseCase,
-      useClass: CreateTaskUseCase,
+      useFactory: (taskRepo: ITaskRepository, userRepo: IUserRepository) =>
+        new CreateTaskUseCase(taskRepo, userRepo),
+      inject: [ITaskRepository, IUserRepository],
     },
     {
       provide: IListTasksUseCase,
-      useClass: ListTasksUseCase,
+      useFactory: (taskRepo: ITaskRepository) => new ListTasksUseCase(taskRepo),
+      inject: [ITaskRepository],
     },
     {
       provide: IUpdateTaskUseCase,
-      useClass: UpdateTaskUseCase,
+      useFactory: (taskRepo: ITaskRepository) => new UpdateTaskUseCase(taskRepo),
+      inject: [ITaskRepository],
     },
     {
       provide: IDeleteTaskUseCase,
-      useClass: DeleteTaskUseCase,
+      useFactory: (taskRepo: ITaskRepository) => new DeleteTaskUseCase(taskRepo),
+      inject: [ITaskRepository],
     },
     {
       provide: IGetTaskUseCase,
-      useClass: GetTaskUseCase,
+      useFactory: (taskRepo: ITaskRepository) => new GetTaskUseCase(taskRepo),
+      inject: [ITaskRepository],
     },
     {
       provide: IAssignUserToTaskUseCase,
-      useClass: AssignUserToTaskUseCase,
+      useFactory: (taskRepo: ITaskRepository, userRepo: IUserRepository) =>
+        new AssignUserToTaskUseCase(taskRepo, userRepo),
+      inject: [ITaskRepository, IUserRepository],
     },
     {
       provide: ICreateUserUseCase,
-      useClass: CreateUserUseCase,
+      useFactory: (userRepo: IUserRepository) => new CreateUserUseCase(userRepo),
+      inject: [IUserRepository],
     },
     {
       provide: IListUsersUseCase,
-      useClass: ListUsersUseCase,
+      useFactory: (userRepo: IUserRepository) => new ListUsersUseCase(userRepo),
+      inject: [IUserRepository],
     },
   ],
 })

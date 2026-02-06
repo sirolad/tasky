@@ -8,6 +8,12 @@ import {
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { Prisma } from '@prisma/client';
+import {
+  DomainException,
+  ResourceNotFoundException,
+  BusinessRuleViolationException,
+  ResourceAlreadyExistsException,
+} from '../../domain/exceptions';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -54,6 +60,20 @@ export class AllExceptionsFilter implements ExceptionFilter {
           errorCode = exception.code;
           break;
       }
+    } else if (exception instanceof DomainException) {
+      if (exception instanceof ResourceNotFoundException) {
+        httpStatus = HttpStatus.NOT_FOUND;
+        errorCode = 'RESOURCE_NOT_FOUND';
+      } else if (exception instanceof BusinessRuleViolationException) {
+        httpStatus = HttpStatus.BAD_REQUEST;
+        errorCode = 'BUSINESS_RULE_VIOLATION';
+      } else if (exception instanceof ResourceAlreadyExistsException) {
+        httpStatus = HttpStatus.CONFLICT;
+        errorCode = 'RESOURCE_ALREADY_EXISTS';
+      } else {
+        httpStatus = HttpStatus.BAD_REQUEST;
+      }
+      message = exception.message;
     } else if (exception instanceof Error) {
       message = exception.message;
       this.logger.error(
