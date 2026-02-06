@@ -8,13 +8,17 @@ The project is structured into layers to ensure separation of concerns and maint
 
 *   **Domain** (`src/domain/`): Core business logic, entities (`Task`, `User`), and repository interfaces. No external dependencies.
     *   `entities/` - Domain models with business rules
+    *   `exceptions/` - Domain-specific exceptions
     *   `repositories/` - Repository interfaces (implementation-agnostic)
+
 
 *   **Application** (`src/application/`): Framework-agnostic use cases that coordinate domain logic and infrastructure.
     *   `use-cases/` - Pure TypeScript classes implementing business logic, decoupled from NestJS via dependency injection (DI).
 
 *   **Infrastructure** (`src/infrastructure/`): Technical implementations and external concerns.
+    *   `config/` - Configuration and validation
     *   `repositories/` - Prisma-based repository implementations
+
     *   `filters/` - Global exception filters
     *   `interceptors/` - Response transformation interceptors
     *   `prisma/` - Database service and configuration
