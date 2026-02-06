@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import { TaskStatus } from '../src/domain/entities';
 
-const adapter = new PrismaBetterSqlite3({ url: 'prisma/dev.db' });
+const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL || 'prisma/dev.db' });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
