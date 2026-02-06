@@ -234,7 +234,7 @@ This project uses GitHub Actions for continuous integration and deployment:
 **Automated Checks:**
 - ✅ ESLint code quality checks
 - ✅ Clean Architecture validation (dependency-cruiser)
-- ✅ Unit tests (15 tests)
+- ✅ Unit tests (18 tests)
 - ✅ E2E tests (7 tests)
 - ✅ Test coverage reporting
 - ✅ Production build verification
