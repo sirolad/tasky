@@ -5,9 +5,7 @@ import { ICreateUserUseCase } from '../use-case.interfaces';
 import { ResourceAlreadyExistsException } from '../../../domain/exceptions';
 
 export class CreateUserUseCase implements ICreateUserUseCase {
-  constructor(
-    private readonly userRepository: IUserRepository,
-  ) {}
+  constructor(private readonly userRepository: IUserRepository) {}
 
   async execute(name: string, email: string): Promise<User> {
     const existingUser = await this.userRepository.findByEmail(email);

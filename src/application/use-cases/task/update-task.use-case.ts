@@ -7,9 +7,7 @@ import {
 } from '../../../domain/exceptions';
 
 export class UpdateTaskUseCase implements IUpdateTaskUseCase {
-  constructor(
-    private readonly taskRepository: ITaskRepository,
-  ) {}
+  constructor(private readonly taskRepository: ITaskRepository) {}
 
   async execute(
     id: string,

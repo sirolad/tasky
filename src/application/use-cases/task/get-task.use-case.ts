@@ -4,9 +4,7 @@ import { IGetTaskUseCase } from '../use-case.interfaces';
 import { ResourceNotFoundException } from '../../../domain/exceptions';
 
 export class GetTaskUseCase implements IGetTaskUseCase {
-  constructor(
-    private readonly taskRepository: ITaskRepository,
-  ) {}
+  constructor(private readonly taskRepository: ITaskRepository) {}
 
   async execute(id: string): Promise<{ task: Task; user: User | null }> {
     const result = await this.taskRepository.findById(id);

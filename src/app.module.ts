@@ -58,12 +58,14 @@ import { TaskController, UserController } from './presentation/controllers';
     },
     {
       provide: IUpdateTaskUseCase,
-      useFactory: (taskRepo: ITaskRepository) => new UpdateTaskUseCase(taskRepo),
+      useFactory: (taskRepo: ITaskRepository) =>
+        new UpdateTaskUseCase(taskRepo),
       inject: [ITaskRepository],
     },
     {
       provide: IDeleteTaskUseCase,
-      useFactory: (taskRepo: ITaskRepository) => new DeleteTaskUseCase(taskRepo),
+      useFactory: (taskRepo: ITaskRepository) =>
+        new DeleteTaskUseCase(taskRepo),
       inject: [ITaskRepository],
     },
     {
@@ -79,7 +81,8 @@ import { TaskController, UserController } from './presentation/controllers';
     },
     {
       provide: ICreateUserUseCase,
-      useFactory: (userRepo: IUserRepository) => new CreateUserUseCase(userRepo),
+      useFactory: (userRepo: IUserRepository) =>
+        new CreateUserUseCase(userRepo),
       inject: [IUserRepository],
     },
     {

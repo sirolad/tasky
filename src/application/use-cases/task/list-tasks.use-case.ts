@@ -3,9 +3,7 @@ import { Task, User } from '../../../domain/entities';
 import { IListTasksUseCase } from '../use-case.interfaces';
 
 export class ListTasksUseCase implements IListTasksUseCase {
-  constructor(
-    private readonly taskRepository: ITaskRepository,
-  ) {}
+  constructor(private readonly taskRepository: ITaskRepository) {}
 
   async execute(filters?: {
     status?: string;

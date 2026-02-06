@@ -112,12 +112,14 @@ tasky/
 ├── src/
 │   ├── domain/
 │   │   ├── entities/        # Task, User domain models
+│   │   ├── exceptions/      # Domain-specific exceptions
 │   │   └── repositories/    # Repository interfaces
 │   ├── application/
 │   │   └── use-cases/       # Business logic orchestration
 │   │       ├── task/        # Task-related use cases
 │   │       └── user/        # User-related use cases
 │   ├── infrastructure/
+│   │   ├── config/          # Configuration and validation
 │   │   ├── repositories/    # Prisma implementations
 │   │   ├── filters/         # Exception handling
 │   │   ├── interceptors/    # Response transformation
