@@ -1,15 +1,12 @@
 import { ITaskRepository, IUserRepository } from '../../../domain/repositories';
 import { Task, TaskStatus, User } from '../../../domain/entities';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { ICreateTaskUseCase } from '../use-case.interfaces';
+import { ResourceNotFoundException } from '../../../domain/exceptions';
 
-@Injectable()
 export class CreateTaskUseCase implements ICreateTaskUseCase {
   constructor(
-    @Inject(ITaskRepository)
     private readonly taskRepository: ITaskRepository,
-    @Inject(IUserRepository)
     private readonly userRepository: IUserRepository,
   ) {}
 
@@ -22,7 +19,7 @@ export class CreateTaskUseCase implements ICreateTaskUseCase {
     if (assignedToId) {
       user = await this.userRepository.findById(assignedToId);
       if (!user) {
-        throw new NotFoundException(`User with ID "${assignedToId}" not found`);
+        throw new ResourceNotFoundException('User', assignedToId);
       }
     }
 

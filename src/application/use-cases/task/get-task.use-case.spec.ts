@@ -1,7 +1,7 @@
 import { GetTaskUseCase } from './get-task.use-case';
 import { ITaskRepository } from '../../../domain/repositories';
 import { Task, TaskStatus } from '../../../domain/entities';
-import { NotFoundException } from '@nestjs/common';
+import { ResourceNotFoundException } from '../../../domain/exceptions';
 
 describe('GetTaskUseCase', () => {
   let getTaskUseCase: GetTaskUseCase;
@@ -32,7 +32,7 @@ describe('GetTaskUseCase', () => {
     taskRepository.findById.mockResolvedValue(null);
 
     await expect(getTaskUseCase.execute('999')).rejects.toThrow(
-      NotFoundException,
+      ResourceNotFoundException,
     );
     void expect(taskRepository.findById).toHaveBeenCalledWith('999');
   });

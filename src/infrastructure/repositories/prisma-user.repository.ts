@@ -1,8 +1,9 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { IUserRepository } from '../../domain/repositories';
 import { User } from '../../domain/entities';
 import { PrismaService } from '../prisma/prisma.service';
+import { ResourceAlreadyExistsException } from '../../domain/exceptions';
 
 @Injectable()
 export class PrismaUserRepository implements IUserRepository {
@@ -45,9 +46,7 @@ export class PrismaUserRepository implements IUserRepository {
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === 'P2002'
       ) {
-        throw new ConflictException(
-          `User with email ${user.email} already exists`,
-        );
+        throw new ResourceAlreadyExistsException('User', user.email);
       }
       throw error;
     }
